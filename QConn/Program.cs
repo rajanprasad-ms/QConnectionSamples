@@ -9,7 +9,7 @@ namespace QConn {
             //establish connection
             c connection = null;
             try {
-                connection = new c("localhost", 5001) {
+                connection = new c("localhost", 5002) {
                     ReceiveTimeout = 1000
                 };
                 c.e = System.Text.Encoding.UTF8;
@@ -19,26 +19,26 @@ namespace QConn {
                 //insert some data-rows
                 object[] x = new object[]
                 {
-                    DateTime.Now.TimeOfDay,
-                    "xx",
-                    (double)93.5,
-                    300,
-                };
+                    300
+		};
 
                 for (var i = 0; i < 1000; ++i) {
-                    connection.k("insert", "trade", x);
-                }
+//                    x[2] = i+1;
+//		    connection.k("insert", "traded", 100);
+               }
+
 
                 //read data
-                var result = c.td(connection.k("select sum price by sym from trade"));
+                var result = c.td(connection.k("select sum price from traded"));
 
-                Console.WriteLine("cols: " + c.n(result.x));
-                Console.WriteLine("rows: " + c.n(result.y[0]));
+                Console.WriteLine("cols: " + result.x[0]);
+                Console.WriteLine("rows: " + ((int[])result.y[0])[0]);
             } finally
             {
                 //finally close connection
                 connection?.Close();
-            }
+		Console.WriteLine("Done.");
+	    }
         }
     }
 }
